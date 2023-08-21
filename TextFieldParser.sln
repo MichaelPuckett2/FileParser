@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextFieldParser", "FileParser\TextFieldParser.csproj", "{2182063D-05BA-432C-9E6E-5C3539F90826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFieldParserTests", "TextFieldParserTests\TextFieldParserTests.csproj", "{9995A22D-1505-47E2-BE9C-7AC46C5439F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2182063D-05BA-432C-9E6E-5C3539F90826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2182063D-05BA-432C-9E6E-5C3539F90826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2182063D-05BA-432C-9E6E-5C3539F90826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2182063D-05BA-432C-9E6E-5C3539F90826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9995A22D-1505-47E2-BE9C-7AC46C5439F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9995A22D-1505-47E2-BE9C-7AC46C5439F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9995A22D-1505-47E2-BE9C-7AC46C5439F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9995A22D-1505-47E2-BE9C-7AC46C5439F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C11F61D0-87FA-4A41-9F11-A5F5DEB63BEF}
+	EndGlobalSection
+EndGlobal
