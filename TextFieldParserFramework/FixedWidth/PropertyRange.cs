@@ -7,33 +7,33 @@ namespace TextFieldParserFramework.FixedWidth
     public struct PropertyRange<T>
     {
         public Range Range;
-        public Expression<Func<T, object>> GetPropertyName;
+        public string PropertyName;
 
         public PropertyRange(Range range, Expression<Func<T, object>> getPropertyName)
         {
             Range = range;
-            GetPropertyName = getPropertyName;
+            PropertyName = getPropertyName.GetMemberName() ?? string.Empty;
         }
 
         public override bool Equals(object obj)
         {
             return obj is PropertyRange<T> other &&
                    EqualityComparer<Range>.Default.Equals(Range, other.Range) &&
-                   EqualityComparer<Expression<Func<T, object>>>.Default.Equals(GetPropertyName, other.GetPropertyName);
+                   EqualityComparer<string>.Default.Equals(PropertyName, other.PropertyName);
         }
 
         public override int GetHashCode()
         {
             int hashCode = 655372231;
             hashCode = hashCode * -1521134295 + Range.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Expression<Func<T, object>>>.Default.GetHashCode(GetPropertyName);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PropertyName);
             return hashCode;
         }
 
-        public void Deconstruct(out Range range, out Expression<Func<T, object>> getPropertyName)
+        public void Deconstruct(out Range range, out string propertyName)
         {
             range = Range;
-            getPropertyName = GetPropertyName;
+            propertyName = PropertyName;
         }
     }
 }

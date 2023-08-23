@@ -38,7 +38,9 @@ namespace TextFieldParserFramework
         {
             try
             {
-                var nullableStringValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertToInvariantString(item);
+                var nullableStringValue = propertyInfo.PropertyType == typeof(string)
+                                        ? (string)propertyInfo.GetValue(item)
+                                        : TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertToInvariantString(item);
                 if (nullableStringValue == null)
                 {
                     stringValue = string.Empty;

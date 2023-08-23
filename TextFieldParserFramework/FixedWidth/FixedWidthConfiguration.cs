@@ -33,10 +33,9 @@ namespace TextFieldParserFramework.FixedWidth
         {
             foreach (PropertyRange<T> propertyRange in propertyRanges)
             {
-                var propertyName = propertyRange.GetPropertyName.GetMemberName();
-                if (!ranges.ContainsKey(propertyName))
+                if (!ranges.ContainsKey(propertyRange.PropertyName))
                 {
-                    ranges.Add(propertyName, propertyRange.Range);
+                    ranges.Add(propertyRange.PropertyName, propertyRange.Range);
                 }
             }
         }

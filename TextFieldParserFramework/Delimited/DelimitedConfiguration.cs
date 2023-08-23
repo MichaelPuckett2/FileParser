@@ -47,7 +47,7 @@ namespace TextFieldParserFramework.Delimited
             return this;
         }
 
-        public DelimitedConfiguration<T> SetProperties(IEnumerable<PropertyIndex<T>> propertyRanges)
+        public DelimitedConfiguration<T> SetProperties(params PropertyIndex<T>[] propertyRanges)
         {
             foreach (var propertyRange in propertyRanges)
             {
