@@ -2,7 +2,7 @@
 
 namespace TextFieldParser.Delimited;
 
-public class DelimitedBuilder<T>
+public class DelimitedBuilder<T> where T : notnull
 {
     private readonly DelimitedConfiguration<T> configuration = new();
 

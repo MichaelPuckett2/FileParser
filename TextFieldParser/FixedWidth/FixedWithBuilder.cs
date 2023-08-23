@@ -1,6 +1,6 @@
 ﻿namespace TextFieldParser.FixedWidth;
 
-public class FixedWithBuilder<T>
+public class FixedWithBuilder<T> where T : notnull
 {
     private readonly FixedWidthConfiguration<T> configuration = new();
 

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using TripleG3.ExpressionExtensions;
 
-namespace TextFieldParser.Delimited;
+namespace TextFieldParser;
 
 public static class Extensions
 {

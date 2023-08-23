@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace TextFieldParser.Delimited;
+﻿namespace TextFieldParser.Delimited;
 
 public class DelimitedFile<T> : IFileParse<T> where T : notnull
 {

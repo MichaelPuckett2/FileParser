@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextFieldParserTests", "Tex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextFieldParser", "TextFieldParser\TextFieldParser.csproj", "{71F960F7-C765-46A4-9E91-2D3F3A421C15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFieldParserFramework", "TextFieldParserFramework\TextFieldParserFramework.csproj", "{9B84DB26-AEF8-4725-A6EE-D022C9087DCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{71F960F7-C765-46A4-9E91-2D3F3A421C15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F960F7-C765-46A4-9E91-2D3F3A421C15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71F960F7-C765-46A4-9E91-2D3F3A421C15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B84DB26-AEF8-4725-A6EE-D022C9087DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B84DB26-AEF8-4725-A6EE-D022C9087DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B84DB26-AEF8-4725-A6EE-D022C9087DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B84DB26-AEF8-4725-A6EE-D022C9087DCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

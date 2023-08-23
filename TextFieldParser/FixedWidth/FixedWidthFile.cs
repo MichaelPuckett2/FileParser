@@ -1,6 +1,4 @@
-﻿using TextFieldParser.Delimited;
-
-namespace TextFieldParser.FixedWidth;
+﻿namespace TextFieldParser.FixedWidth;
 
 public class FixedWidthFile<T> : IFileParse<T> where T : notnull
 {
