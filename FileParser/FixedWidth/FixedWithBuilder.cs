@@ -1,14 +1,12 @@
-﻿using FileParser;
-
-namespace TextFieldParser.FixedWidth;
+﻿namespace TextFieldParser.FixedWidth;
 
 public class FixedWithBuilder<T>
 {
-    private readonly FixedWidthConfiguration<T> fixedWidthConfiguration = new FixedWidthConfiguration<T>();
+    private readonly FixedWidthConfiguration<T> configuration = new();
 
     public FixedWithBuilder<T> Configure(Action<FixedWidthConfiguration<T>> sendConfiguration)
     {
-        sendConfiguration.Invoke(fixedWidthConfiguration);
+        sendConfiguration.Invoke(configuration);
         return this;
     }
 
@@ -19,9 +17,9 @@ public class FixedWithBuilder<T>
             var rangeAttribute = (RangeAttribute?)property.GetCustomAttributes(typeof(RangeAttribute), false).FirstOrDefault();
             if (rangeAttribute != null)
             {
-                fixedWidthConfiguration.Set(property.Name, (rangeAttribute.Index, rangeAttribute.Length));
+                configuration.Set((rangeAttribute.Index, rangeAttribute.Length), property.Name);
             }
         }
-        return new FixedWidthFile<T>(fixedWidthConfiguration);
+        return new FixedWidthFile<T>(configuration);
     }
 }

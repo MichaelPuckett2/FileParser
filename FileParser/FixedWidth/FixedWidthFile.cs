@@ -18,7 +18,7 @@ public class FixedWidthFile<T>
 
     public void WriteLines(string filePath, IEnumerable<T> values)
     {
-        File.WriteAllLines(filePath, values.Select(x => ConvertToString(x)));
+        File.WriteAllLines(filePath, values.Select(ConvertToString));
     }
 
     public T ConvertToType(string line)

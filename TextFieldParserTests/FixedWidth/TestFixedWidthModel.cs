@@ -1,7 +1,8 @@
-﻿using FileParser;
+﻿using TextFieldParser.FixedWidth;
 
-namespace TextFieldParser.FixedWidth.Tests;
+namespace TextFieldParserTests.FixedWidth;
 
+[FixedWidth]
 public class TestFixedWidthModel
 {
     [Range(1, 2)]

@@ -1,8 +1,9 @@
-﻿using FileParser;
+﻿using TextFieldParser.FixedWidth;
 
-namespace TextFieldParser.FixedWidth.Tests;
+namespace TextFieldParserTests.FixedWidth;
 
-public class TestFixedWidthPerson
+[FixedWidth]
+public class PersonWithAttributes
 {
     [Range(1, 50)]
     public string FirstName { get; set; }

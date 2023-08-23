@@ -1,0 +1,7 @@
+Mathew, KJV, 40
+Mark, KJV, 40
+Luke, KJV, 40
+John, KJV, 40
+Acts, KJV, 40
+Romans, KJV, 40
+Corinthians, KJV, 40

@@ -1,4 +1,4 @@
-﻿namespace TextFieldParser.FixedWidth.Tests;
+﻿namespace TextFieldParserTests.FixedWidth;
 
 public class TestFixedWidthSchema
 {

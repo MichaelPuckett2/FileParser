@@ -1,6 +1,6 @@
-﻿namespace TextFieldParser.FixedWidth.Tests;
+﻿namespace TextFieldParserTests.Delimiter;
 
-public class TestFixedWidthPerson_NoAttributes
+public class Person
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

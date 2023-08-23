@@ -1,4 +1,4 @@
-﻿namespace FileParser;
+﻿namespace TextFieldParser.FixedWidth;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class RangeAttribute : Attribute
