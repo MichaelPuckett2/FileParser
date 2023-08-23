@@ -29,21 +29,20 @@ public class DelimiterTests
     public void ReadWithConfigurationTest()
     {
         //Arrange
-        var actor = FileParseBuilder
-            .AsDelimited<Person>()
-            .Configure(config =>
-            {
-                config
-                .SetDelimeter(",")
-                .SetSplitOptions(StringSplitOptions.TrimEntries)
-                .Set((0, person => person.FirstName),
-                     (1, person => person.LastName),
-                     (2, person => person.Age));
-            })
-            .Build();
+        var fileParser = FileParseBuilder
+                        .AsDelimited<Person>()
+                        .Configure(config =>
+                        {
+                            config.SetDelimeter(",")
+                                  .SetSplitOptions(StringSplitOptions.TrimEntries)
+                                  .SetProperties((0, person => person.FirstName),
+                                       (1, person => person.LastName),
+                                       (2, person => person.Age));
+                        })
+                        .Build();
 
         //Act
-        var actual = actor.ReadFile(ReadTestFile);
+        var actual = fileParser.ReadFile(ReadTestFile);
 
         //Assert
         Assert.AreEqual(actual.Count(), 7);
@@ -71,7 +70,7 @@ public class DelimiterTests
                 config
                 .SetDelimeter(",")
                 .SetSplitOptions(StringSplitOptions.TrimEntries)
-                .Set((0, person => person.FirstName),
+                .SetProperties((0, person => person.FirstName),
                      (1, person => person.LastName),
                      (2, person => person.Age));
             })

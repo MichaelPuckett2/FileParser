@@ -2,7 +2,7 @@
 
 namespace TextFieldParser.Delimited;
 
-public class DelimitedFile<T> : IFileParse<T>
+public class DelimitedFile<T> : IFileParse<T> where T : notnull
 {
     private readonly DelimitedConfiguration<T> delimitedConfiguration;
 
@@ -27,13 +27,9 @@ public class DelimitedFile<T> : IFileParse<T>
     {
         var implementation = Activator.CreateInstance<T>();
         ReadOnlySpan<string> stringValues = line.Split(delimitedConfiguration.Delimeter, delimitedConfiguration.StringSplitOptions);
-        foreach (var (kvp, property) in from kvp in delimitedConfiguration.PropertyIndexes
-                                        let property = typeof(T).GetProperty(kvp.Key)
-                                        select (kvp, property))
+        foreach (var (propertyName, index) in delimitedConfiguration.PropertyIndexes)
         {
-            if (property == null) continue;
-            var propertyValue = TypeDescriptor.GetConverter(property.PropertyType).ConvertFromInvariantString(stringValues[kvp.Value]);
-            property.SetValue(implementation, propertyValue);
+            implementation.TrySetPropertyFromString(propertyName, stringValues[index]);
         }
         return implementation;
     }
@@ -45,8 +41,8 @@ public class DelimitedFile<T> : IFileParse<T>
         {
             var property = typeof(T).GetProperty(kvp.Key);
             if (property == null) continue;
-            var stringValue = TypeDescriptor.GetConverter(property.PropertyType).ConvertToInvariantString(property.GetValue(t));
-            stringValues.Add(stringValue ?? string.Empty);
+            _ = t.TryGetStringFromProperty(kvp.Key, out string stringValue);
+            stringValues.Add(stringValue);
         }
         var result = string.Join(delimitedConfiguration.Delimeter, stringValues);
         return result;

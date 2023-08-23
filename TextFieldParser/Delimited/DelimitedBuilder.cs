@@ -28,7 +28,7 @@ public class DelimitedBuilder<T>
             var indexAttribute = property.GetCustomAttribute<IndexAttribute>();
             if (indexAttribute != null)
             {
-                configuration.Set(indexAttribute.Index, property.Name);
+                configuration.SetProperty(indexAttribute.Index, property.Name);
             }
         }
         return new DelimitedFile<T>(configuration);

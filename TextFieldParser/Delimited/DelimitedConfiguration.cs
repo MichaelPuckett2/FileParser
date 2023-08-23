@@ -27,7 +27,7 @@ public class DelimitedConfiguration<T>
         return this;
     }
 
-    public DelimitedConfiguration<T> Set(int index, string propertyName)
+    public DelimitedConfiguration<T> SetProperty(int index, string propertyName)
     {
         if (!propertyIndexes.ContainsKey(propertyName))
         {
@@ -36,7 +36,7 @@ public class DelimitedConfiguration<T>
         return this;
     }
 
-    public DelimitedConfiguration<T> Set(int index, Expression<Func<T, object>> getPropertyName)
+    public DelimitedConfiguration<T> SetProperty(int index, Expression<Func<T, object>> getPropertyName)
     {
         var propertyName = getPropertyName.GetMemberName();
         if (!propertyIndexes.ContainsKey(propertyName))
@@ -46,7 +46,7 @@ public class DelimitedConfiguration<T>
         return this;
     }
 
-    public DelimitedConfiguration<T> Set(params (int index, Expression<Func<T, object>> getPropertyName)[] propertyRanges)
+    public DelimitedConfiguration<T> SetProperties(params (int index, Expression<Func<T, object>> getPropertyName)[] propertyRanges)
     {
         foreach (var (index, getPropertyName) in propertyRanges)
         {

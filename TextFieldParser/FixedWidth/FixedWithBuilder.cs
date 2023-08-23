@@ -17,7 +17,7 @@ public class FixedWithBuilder<T>
             var rangeAttribute = (RangeAttribute?)property.GetCustomAttributes(typeof(RangeAttribute), false).FirstOrDefault();
             if (rangeAttribute != null)
             {
-                configuration.Set((rangeAttribute.Index, rangeAttribute.Length), property.Name);
+                configuration.SetProperty((rangeAttribute.Index, rangeAttribute.Length), property.Name);
             }
         }
         return new FixedWidthFile<T>(configuration);

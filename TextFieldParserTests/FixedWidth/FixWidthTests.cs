@@ -34,7 +34,7 @@ public class FixWidthTests
             .Configure(config =>
             {
                 config
-                .Set(((1, 50), person => person.FirstName),
+                .SetProperties(((1, 50), person => person.FirstName),
                      ((51, 50), person => person.LastName),
                      ((101, 3), person => person.Age));
             })
@@ -67,7 +67,7 @@ public class FixWidthTests
             .Configure(config =>
             {
                 config
-                .Set(
+                .SetProperties(
                     ((1, 50), person => person.FirstName),
                     ((51, 50), person => person.LastName),
                     ((101, 3), person => person.Age));

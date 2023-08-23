@@ -10,7 +10,7 @@ public class FixedWidthConfiguration<T>
     private readonly IDictionary<string, (int Index, int Length)> ranges = new Dictionary<string, (int Index, int Length)>();
     public IReadOnlyDictionary<string, (int Index, int Length)> Ranges => new ReadOnlyDictionary<string, (int Index, int Length)>(ranges);
 
-    public void Set((int index, int length) range, string propertyName)
+    public void SetProperty((int index, int length) range, string propertyName)
     {
         if (!ranges.ContainsKey(propertyName))
         {
@@ -18,7 +18,7 @@ public class FixedWidthConfiguration<T>
         }
     }
 
-    public FixedWidthConfiguration<T> Set((int index, int length) range, Expression<Func<T, object>> getPropertyName)
+    public FixedWidthConfiguration<T> SetProperty((int index, int length) range, Expression<Func<T, object>> getPropertyName)
     {
         var propertyName = getPropertyName.GetMemberName();
         if (!ranges.ContainsKey(propertyName))
@@ -28,7 +28,7 @@ public class FixedWidthConfiguration<T>
         return this;
     }
 
-    public void Set(params ((int index, int length) range, Expression<Func<T, object>> getPropertyName)[] propertyRanges)
+    public void SetProperties(params ((int index, int length) range, Expression<Func<T, object>> getPropertyName)[] propertyRanges)
     {
         foreach (((int index, int length), Expression <Func<T, object>> getPropertyName) in propertyRanges)
         {

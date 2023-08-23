@@ -1,5 +1,5 @@
 # TripleG3.FileParser
-### Fixed width parsing example:
+### Delimited file to model parsing:
 ```
 {
   "firstName": "John",

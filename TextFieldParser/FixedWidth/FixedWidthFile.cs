@@ -1,6 +1,8 @@
-﻿namespace TextFieldParser.FixedWidth;
+﻿using TextFieldParser.Delimited;
 
-public class FixedWidthFile<T> : IFileParse<T>
+namespace TextFieldParser.FixedWidth;
+
+public class FixedWidthFile<T> : IFileParse<T> where T : notnull
 {
     private readonly FixedWidthConfiguration<T> fixedWidthConfiguration;
 
@@ -26,7 +28,7 @@ public class FixedWidthFile<T> : IFileParse<T>
         var implementation = Activator.CreateInstance<T>();
         foreach (var kvp in fixedWidthConfiguration.Ranges.OrderBy(x => x.Value.Index))
         {
-            typeof(T).GetProperty(kvp.Key)?.SetValue(implementation, line.Substring(kvp.Value.Index - 1, kvp.Value.Length));
+            implementation.TrySetPropertyFromString(kvp.Key, line.Substring(kvp.Value.Index - 1, kvp.Value.Length));
         }
         return implementation;
     }
@@ -39,15 +41,15 @@ public class FixedWidthFile<T> : IFileParse<T>
         string lineValue = "".PadRight(capacity);
         foreach (var kvp in fixedWidthConfiguration.Ranges)
         {
-            var propertyValue = typeof(T).GetProperty(kvp.Key)?.GetValue(t)?.ToString() ?? string.Empty;
+            _ = t.TryGetStringFromProperty(kvp.Key, out string stringValue);
             string fieldValue;
-            if (propertyValue.Length > kvp.Value.Length)
+            if (stringValue.Length > kvp.Value.Length)
             {
-                fieldValue = propertyValue.Substring(0, kvp.Value.Length);
+                fieldValue = stringValue.Substring(0, kvp.Value.Length);
             }
             else
             {
-                fieldValue = propertyValue.PadRight(kvp.Value.Length);
+                fieldValue = stringValue.PadRight(kvp.Value.Length);
             }
             lineValue = lineValue.Remove(kvp.Value.Index - 1, kvp.Value.Length);
             lineValue = lineValue.Insert(kvp.Value.Index - 1, fieldValue);
