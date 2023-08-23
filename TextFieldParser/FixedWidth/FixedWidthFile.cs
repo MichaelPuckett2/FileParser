@@ -1,6 +1,6 @@
 ﻿namespace TextFieldParser.FixedWidth;
 
-public class FixedWidthFile<T>
+public class FixedWidthFile<T> : IFileParse<T>
 {
     private readonly FixedWidthConfiguration<T> fixedWidthConfiguration;
 
@@ -8,7 +8,7 @@ public class FixedWidthFile<T>
     internal FixedWidthFile(FixedWidthConfiguration<T> fixedWidthConfiguration)
         => this.fixedWidthConfiguration = fixedWidthConfiguration;
 
-    public IEnumerable<T> ReadLines(string filePath)
+    public IEnumerable<T> ReadFile(string filePath)
     {
         foreach (var line in File.ReadLines(filePath))
         {
@@ -16,12 +16,12 @@ public class FixedWidthFile<T>
         }
     }
 
-    public void WriteLines(string filePath, IEnumerable<T> values)
+    public void WriteFile(string filePath, IEnumerable<T> values)
     {
         File.WriteAllLines(filePath, values.Select(ConvertToString));
     }
 
-    public T ConvertToType(string line)
+    internal T ConvertToType(string line)
     {
         var implementation = Activator.CreateInstance<T>();
         foreach (var kvp in fixedWidthConfiguration.Ranges.OrderBy(x => x.Value.Index))
@@ -31,7 +31,7 @@ public class FixedWidthFile<T>
         return implementation;
     }
 
-    public string ConvertToString(T t)
+    internal string ConvertToString(T t)
     {
         int capacity;
         var (Index, Length) = fixedWidthConfiguration.Ranges.Values.OrderByDescending(x => x.Index).FirstOrDefault();

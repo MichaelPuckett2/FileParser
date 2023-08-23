@@ -2,7 +2,7 @@
 
 namespace TextFieldParser.Delimited;
 
-public class DelimitedFile<T>
+public class DelimitedFile<T> : IFileParse<T>
 {
     private readonly DelimitedConfiguration<T> delimitedConfiguration;
 
@@ -10,7 +10,7 @@ public class DelimitedFile<T>
     internal DelimitedFile(DelimitedConfiguration<T> delimitedConfiguration)
         => this.delimitedConfiguration = delimitedConfiguration;
 
-    public IEnumerable<T> ReadLines(string filePath)
+    public IEnumerable<T> ReadFile(string filePath)
     {
         foreach (var line in File.ReadLines(filePath))
         {
@@ -18,12 +18,12 @@ public class DelimitedFile<T>
         }
     }
 
-    public void WriteLines(string filePath, IEnumerable<T> values)
+    public void WriteFile(string filePath, IEnumerable<T> values)
     {
         File.WriteAllLines(filePath, values.Select(ConvertToString));
     }
 
-    public T ConvertToType(string line)
+    internal T ConvertToType(string line)
     {
         var implementation = Activator.CreateInstance<T>();
         ReadOnlySpan<string> stringValues = line.Split(delimitedConfiguration.Delimeter, delimitedConfiguration.StringSplitOptions);
@@ -38,7 +38,7 @@ public class DelimitedFile<T>
         return implementation;
     }
 
-    public string ConvertToString(T t)
+    internal string ConvertToString(T t)
     {
         var stringValues = new List<string>();
         foreach (var kvp in delimitedConfiguration.PropertyIndexes.OrderBy(x => x.Value))

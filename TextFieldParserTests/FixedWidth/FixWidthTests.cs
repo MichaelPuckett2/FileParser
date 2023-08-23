@@ -14,12 +14,12 @@ public class FixWidthTests
     public void ReadWithAttributesTest()
     {
         //Arrange
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 
         //Act
-        var actual = actor.ReadLines(ReadTestFile);
+        var actual = actor.ReadFile(ReadTestFile);
 
         //Assert
         Assert.AreEqual(actual.Count(), 7);
@@ -29,20 +29,19 @@ public class FixWidthTests
     public void ReadWithConfigurationTest()
     {
         //Arrange
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
                 config
-                .Set(
-                    ((1, 50), person => person.FirstName),
-                    ((51, 50), person => person.LastName),
-                    ((101, 3), person => person.Age));
+                .Set(((1, 50), person => person.FirstName),
+                     ((51, 50), person => person.LastName),
+                     ((101, 3), person => person.Age));
             })
             .Build();
 
         //Act
-        var actual = actor.ReadLines(ReadTestFile);
+        var actual = actor.ReadFile(ReadTestFile);
 
         //Assert
         Assert.AreEqual(actual.Count(), 7);
@@ -63,7 +62,7 @@ public class FixWidthTests
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
@@ -76,7 +75,7 @@ public class FixWidthTests
             .Build();
 
         //Act
-        actor.WriteLines(WriteConfigurationTestFile, people);
+        actor.WriteFile(WriteConfigurationTestFile, people);
 
         //Assert
         Assert.IsTrue(File.Exists(WriteConfigurationTestFile));
@@ -98,12 +97,12 @@ public class FixWidthTests
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 
         //Act
-        actor.WriteLines(WriteAttributeTestFile, people);
+        actor.WriteFile(WriteAttributeTestFile, people);
 
         //Assert
         Assert.IsTrue(File.Exists(WriteAttributeTestFile));
