@@ -1,13 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <TargetFramework>net7.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <WarningsAsErrors>Nullable</WarningsAsErrors>
+	  <Title>G3 File Parser</Title>
+	  <Description>Parses files to custom models using attributes or fluent configuration.  Works with delimited files and fixed width at the time of this release.</Description>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <PackageTags>File Mapper, MapFile, ParseFile, Parse File, File, File T, File TItem</PackageTags>
+	  <Copyright>@2023</Copyright>
+	  <PackageProjectUrl>https://github.com/MichaelPuckett2/FileParser</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/MichaelPuckett2/FileParser</RepositoryUrl>
+	  <Company>TripleG3</Company>
+	  <Authors>Michael Puckett, II</Authors>
+	  <Version>7.0.0</Version>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TripleG3.ExpressionExtensions" Version="7.0.0" />
+    <PackageReference Include="TripleG3.ExpressionExtensions" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

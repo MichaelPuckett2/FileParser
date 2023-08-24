@@ -1,6 +1,6 @@
 ﻿namespace TextFieldParser.FixedWidth;
 
-public class FixedWidthFile<T> : IFileParse<T> where T : notnull
+public class FixedWidthFile<T> : IFileParser<T> where T : notnull
 {
     private readonly FixedWidthConfiguration<T> fixedWidthConfiguration;
 

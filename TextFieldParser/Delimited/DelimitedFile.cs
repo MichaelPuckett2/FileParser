@@ -1,6 +1,6 @@
 ﻿namespace TextFieldParser.Delimited;
 
-public class DelimitedFile<T> : IFileParse<T> where T : notnull
+public class DelimitedFile<T> : IFileParser<T> where T : notnull
 {
     private readonly DelimitedConfiguration<T> delimitedConfiguration;
 

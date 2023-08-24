@@ -36,8 +36,8 @@ public class DelimiterTests
                             config.SetDelimeter(",")
                                   .SetSplitOptions(StringSplitOptions.TrimEntries)
                                   .SetProperties((0, person => person.FirstName),
-                                       (1, person => person.LastName),
-                                       (2, person => person.Age));
+                                                 (1, person => person.LastName),
+                                                 (2, person => person.Age));
                         })
                         .Build();
 

@@ -10,9 +10,17 @@ public static class Extensions
     public static bool TrySetPropertyFromString<TItem>(this TItem item, PropertyInfo propertyInfo, string stringValue)
         where TItem : notnull
     {
+        object? propertyValue;
         try
         {
-            var propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(stringValue);
+            propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(stringValue);
+        }
+        catch
+        {
+            return false;
+        }
+        try
+        {
             propertyInfo.SetValue(item, propertyValue);
             return true;
         }
@@ -44,8 +52,8 @@ public static class Extensions
         {
             var nullableStringValue = propertyInfo.PropertyType == typeof(string)
                                     ? (string?)propertyInfo.GetValue(item)
-                                    : TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertToInvariantString(item); 
-            
+                                    : TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertToInvariantString(item);
+
             if (nullableStringValue == null)
             {
                 stringValue = string.Empty;
