@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using TextFieldParserFramework;
@@ -14,6 +15,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
         private const string WriteAttributeTestFile = "DelimiterWriteAttributeTest.txt";
         private const string WriteConfigurationTestFile = "DelimiterWriteConfigurationTest.txt";
         private const string ReadTestFile = "DelimitedReadTest.txt";
+        private const string ReadSchemaTestFile = "PersonSchema.txt";
 
         [TestMethod()]
         public void ReadWithAttributesTest()
@@ -113,6 +115,28 @@ namespace TextFieldParserFrameworkTests.Delimiter
             //Assert
             Assert.IsTrue(File.Exists(WriteAttributeTestFile));
             Assert.AreEqual(File.ReadLines(WriteAttributeTestFile).Count(), 7);
+        }
+
+        [TestMethod()]
+        public void ReadSchemaDelimitedForFixedWidthTest()
+        {
+            //Arrange
+            var fileParser = FileParseBuilder
+                            .AsDelimited<ExpandoObject>()
+                            .Configure(config =>
+                            {
+                                config.SetDelimeter(",")
+                                      .SetProperty(0, "Index")
+                                      .SetProperty(1, "Length")
+                                      .SetProperty(2, "PropertyName");
+                            })
+                            .Build();
+
+            //Act
+            var actual = fileParser.ReadFile(ReadSchemaTestFile).ToList();
+
+            //Assert
+            Assert.AreEqual(actual.Count, 3);
         }
     }
 }

@@ -7,47 +7,47 @@ namespace TextFieldParserFramework.Delimited
 {
     public class DelimitedFile<T> : IFileParse<T>
     {
-        private readonly DelimitedConfiguration<T> delimitedConfiguration;
+        private readonly DelimitedConfiguration<T> configuration;
 
         internal DelimitedFile() : this(DelimitedConfiguration<T>.Empty) { }
         internal DelimitedFile(DelimitedConfiguration<T> delimitedConfiguration)
-            => this.delimitedConfiguration = delimitedConfiguration;
+            => this.configuration = delimitedConfiguration;
 
         public IEnumerable<T> ReadFile(string filePath)
         {
             foreach (var line in File.ReadLines(filePath))
             {
-                yield return ConvertToType(line);
+                yield return ConvertFromLine(line);
             }
         }
 
         public void WriteFile(string filePath, IEnumerable<T> values)
         {
-            File.WriteAllLines(filePath, values.Select(ConvertToString));
+            File.WriteAllLines(filePath, values.Select(ConvertToLine));
         }
 
-        internal T ConvertToType(string line)
+        internal T ConvertFromLine(string line)
         {
-            var implementation = Activator.CreateInstance<T>();
-            var stringValues = line.Split(delimitedConfiguration.Delimeter.ToCharArray(), delimitedConfiguration.StringSplitOptions);
-            foreach (var propertyIndex in delimitedConfiguration.PropertyIndexes)
+            var t = Activator.CreateInstance<T>();
+            var stringValues = line.Split(configuration.Delimeter.ToCharArray(), configuration.StringSplitOptions);
+            foreach (var propertyIndex in configuration.PropertyIndexes)
             {
-                implementation.TrySetPropertyFromString(propertyIndex.PropertyName, stringValues[propertyIndex.Index]);
+                t.TrySetPropertyFromString(propertyIndex.PropertyName, stringValues[propertyIndex.Index]);
             }
-            return implementation;
+            return t;
         }
 
-        internal string ConvertToString(T t)
+        internal string ConvertToLine(T t)
         {
             var stringValues = new List<string>();
-            foreach (var propertyIndex in delimitedConfiguration.PropertyIndexes.OrderBy(x => x.Index))
+            foreach (var propertyIndex in configuration.PropertyIndexes.OrderBy(x => x.Index))
             {
                 var property = typeof(T).GetProperty(propertyIndex.PropertyName);
                 if (property == null) continue;
                 _ = t.TryGetStringFromProperty(propertyIndex.PropertyName, out string stringValue);
                 stringValues.Add(stringValue);
             }
-            var result = string.Join(delimitedConfiguration.Delimeter, stringValues);
+            var result = string.Join(configuration.Delimeter, stringValues);
             return result;
         }
     }

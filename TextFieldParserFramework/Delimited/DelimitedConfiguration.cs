@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace TextFieldParserFramework.Delimited
 {
-    public class DelimitedConfiguration<T>
+    public class DelimitedConfiguration<T> : IParserConfiguration
     {
         private readonly IList<PropertyIndex<T>> propertyIndexes = new List<PropertyIndex<T>>();
         public IReadOnlyList<PropertyIndex<T>> PropertyIndexes => new List<PropertyIndex<T>>(propertyIndexes);

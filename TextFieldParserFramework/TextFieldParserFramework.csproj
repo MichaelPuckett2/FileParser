@@ -57,6 +57,7 @@
     <Compile Include="FixedWidth\Range.cs" />
     <Compile Include="FixedWidth\RangeAttribute.cs" />
     <Compile Include="IFileParse.cs" />
+    <Compile Include="IParserConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

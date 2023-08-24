@@ -24,6 +24,8 @@ namespace TextFieldParserFramework.Delimited
                 configuration.SetDelimeter(delimitedAttribute.Delimiter);
             }
 
+            if (typeof(T) is  a )
+
             foreach (var propertyinfo in typeof(T).GetProperties())
             {
                 var indexAttribute = (IndexAttribute)propertyinfo.GetCustomAttribute(typeof(IndexAttribute));

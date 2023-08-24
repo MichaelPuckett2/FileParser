@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace TextFieldParserFramework.FixedWidth
 {
-    public class FixedWidthConfiguration<T>
+    public class FixedWidthConfiguration<T> : IParserConfiguration
     {
 
         private readonly IDictionary<string, Range> ranges = new Dictionary<string, Range>();

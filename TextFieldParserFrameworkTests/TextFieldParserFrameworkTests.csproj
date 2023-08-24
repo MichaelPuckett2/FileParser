@@ -79,6 +79,9 @@
     <Content Include="DelimitedReadTest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="PersonSchema.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="FixedWidthReadTest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
