@@ -4,12 +4,12 @@ using TripleG3.ExpressionExtensions;
 
 namespace TextFieldParser.FixedWidth;
 
-public class FixedWidthConfiguration<T>
+public class FixedWidthConfiguration<T> : IFileParserConfiguration
 {    
-
     private readonly IDictionary<string, (int Index, int Length)> ranges = new Dictionary<string, (int Index, int Length)>();
     public IReadOnlyDictionary<string, (int Index, int Length)> Ranges => new ReadOnlyDictionary<string, (int Index, int Length)>(ranges);
-
+    public Type Type { get; }
+    public FixedWidthConfiguration() => Type = typeof(T);
     public void SetProperty((int index, int length) range, string propertyName)
     {
         if (!ranges.ContainsKey(propertyName))

@@ -51,13 +51,16 @@
     <Compile Include="FileParseBuilder.cs" />
     <Compile Include="FixedWidth\FixedWidthAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthConfiguration.cs" />
-    <Compile Include="FixedWidth\FixedWidthFile.cs" />
-    <Compile Include="FixedWidth\FixedWithBuilder.cs" />
+    <Compile Include="FixedWidth\FixedWidthFileParser.cs" />
+    <Compile Include="FixedWidth\FixedWidthParser.cs" />
+    <Compile Include="FixedWidth\FixedWidthStringParser.cs" />
     <Compile Include="FixedWidth\PropertyRange.cs" />
     <Compile Include="FixedWidth\Range.cs" />
     <Compile Include="FixedWidth\RangeAttribute.cs" />
     <Compile Include="IFileParse.cs" />
-    <Compile Include="IParserConfiguration.cs" />
+    <Compile Include="IParseConfiguration.cs" />
+    <Compile Include="IStringParse.cs" />
+    <Compile Include="IStringParse_T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,7 @@ public class DelimiterTests
     public void ReadWithAttributesTest()
     {
         //Arrange
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsDelimited<PersonWithAttributes>()
             .Build();
 
@@ -29,7 +29,7 @@ public class DelimiterTests
     public void ReadWithConfigurationTest()
     {
         //Arrange
-        var fileParser = FileParseBuilder
+        var fileParser = Parse
                         .AsDelimited<Person>()
                         .Configure(config =>
                         {
@@ -63,7 +63,7 @@ public class DelimiterTests
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsDelimited<Person>()
             .Configure(config =>
             {
@@ -99,7 +99,7 @@ public class DelimiterTests
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsDelimited<PersonWithAttributes>()
             .Build();
 

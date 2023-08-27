@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.Reflection;
 
 namespace TextFieldParserFramework.Delimited
@@ -23,8 +24,6 @@ namespace TextFieldParserFramework.Delimited
 
                 configuration.SetDelimeter(delimitedAttribute.Delimiter);
             }
-
-            if (typeof(T) is  a )
 
             foreach (var propertyinfo in typeof(T).GetProperties())
             {

@@ -12,7 +12,7 @@ public class FixedWidthFile<T> : IFileParser<T> where T : notnull
     {
         foreach (var line in File.ReadLines(filePath))
         {
-            yield return ConvertToType(line);
+            yield return ConvertToLine(line);
         }
     }
 
@@ -21,7 +21,7 @@ public class FixedWidthFile<T> : IFileParser<T> where T : notnull
         File.WriteAllLines(filePath, values.Select(ConvertToString));
     }
 
-    internal T ConvertToType(string line)
+    internal T ConvertToLine(string line)
     {
         var implementation = Activator.CreateInstance<T>();
         foreach (var kvp in fixedWidthConfiguration.Ranges.OrderBy(x => x.Value.Index))

@@ -5,8 +5,9 @@ using System.Linq.Expressions;
 
 namespace TextFieldParserFramework.Delimited
 {
-    public class DelimitedConfiguration<T> : IParserConfiguration
+    public class DelimitedConfiguration<T> : IParseConfiguration
     {
+        public Type Type => typeof(T);
         private readonly IList<PropertyIndex<T>> propertyIndexes = new List<PropertyIndex<T>>();
         public IReadOnlyList<PropertyIndex<T>> PropertyIndexes => new List<PropertyIndex<T>>(propertyIndexes);
         public string Delimeter { get; private set; } = string.Empty;
