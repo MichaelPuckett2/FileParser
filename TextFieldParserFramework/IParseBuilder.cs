@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace TextFieldParserFramework
 {
-    public interface IParseBuilder<TItem, TConfig> where TConfig : IParseConfiguration<TItem>
+    public interface IParseBuilder<T, TConfig> where TConfig : IParseConfiguration<T>
     {
         IReadOnlyDictionary<Type, IStringParse> Parsers { get; }
-        IFileParse<TItem> Build();
-        IParseBuilder<TItem, TConfig> Configure(Action<TConfig> configuration);
-        IParseBuilder<TItem, TConfig> AddParser<TNew, TStringParse>(Func<TStringParse> func)
-            where TStringParse : IStringParse;
+        IFileParse<T> Build();
+        IStringParse<T> BuildStringParser();
+        IParseBuilder<T, TConfig> Configure(Action<TConfig> configuration);
+        IParseBuilder<T, TConfig> AddParser<Tnew>(Func<IStringParse<Tnew>> func);
     }
 }

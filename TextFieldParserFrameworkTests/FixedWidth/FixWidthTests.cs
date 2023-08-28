@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using TextFieldParserFramework;
 using TextFieldParserFramework.FixedWidth;
+using TextFieldParserFrameworkTests.Models;
 
 namespace TextFieldParserFrameworkTests.FixedWidth
 {
@@ -18,7 +19,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
         public void ReadWithAttributesTest()
         {
             //Arrange
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
                 .Build();
 
@@ -33,7 +34,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
         public void ReadComplexTypeTest()
         {
             //Arrange
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
                 .Build();
 
@@ -48,7 +49,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
         public void ReadWithConfigurationTest()
         {
             //Arrange
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsFixedWidth<Person>()
                 .Configure(config =>
                 {
@@ -82,7 +83,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsFixedWidth<Person>()
                 .Configure(config =>
                 {
@@ -117,7 +118,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
                 .Build();
 

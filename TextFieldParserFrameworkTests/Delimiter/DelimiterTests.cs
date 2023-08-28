@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TextFieldParserFramework;
-using TextFieldParserFramework.Delimited;
+using TextFieldParserFramework.FixedWidth;
 using TextFieldParserFrameworkTests.Models;
 
 namespace TextFieldParserFrameworkTests.Delimiter
@@ -21,7 +21,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
         public void ReadWithAttributesTest()
         {
             //Arrange
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsDelimited<PersonWithAttributes>()
                 .Build();
 
@@ -36,15 +36,15 @@ namespace TextFieldParserFrameworkTests.Delimiter
         public void ReadWithConfigurationTest()
         {
             //Arrange
-            var fileParser = FileParseBuilder
+            var fileParser = Parse
                             .AsDelimited<Person>()
                             .Configure(config =>
                             {
                                 config.SetDelimeter(",")
                                       .SetSplitOptions(StringSplitOptions.None)
-                                      .SetProperties(new PropertyIndex<Person>(0, person => person.FirstName),
-                                                     new PropertyIndex<Person>(1, person => person.LastName),
-                                                     new PropertyIndex<Person>(2, person => person.Age));
+                                      .SetProperty(0, person => person.FirstName)
+                                      .SetProperty(1, person => person.LastName)
+                                      .SetProperty(2, person => person.Age);
                             })
                             .Build();
 
@@ -70,15 +70,15 @@ namespace TextFieldParserFrameworkTests.Delimiter
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsDelimited<Person>()
                 .Configure(config =>
                 {
                     config
                     .SetDelimeter(",")
-                    .SetProperties(new PropertyIndex<Person>(0, person => person.FirstName),
-                                   new PropertyIndex<Person>(1, person => person.LastName),
-                                   new PropertyIndex<Person>(2, person => person.Age));
+                    .SetProperty(0, person => person.FirstName)
+                    .SetProperty(1, person => person.LastName)
+                    .SetProperty(2, person => person.Age);
                 })
                 .Build();
 
@@ -105,7 +105,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-            var actor = FileParseBuilder
+            var actor = Parse
                 .AsDelimited<PersonWithAttributes>()
                 .Build();
 
@@ -121,16 +121,22 @@ namespace TextFieldParserFrameworkTests.Delimiter
         public void ReadSchemaDelimitedForFixedWidthTest()
         {
             //Arrange
-            var fileParser = FileParseBuilder
+            var rangeParser = Parse.AsDelimited<Range>()
+                                   .Configure(c => c.SetDelimeter("-")
+                                   .SetProperty(1, x => x.Index)
+                                   .SetProperty(2, x => x.Length))
+                                   .BuildStringParser();
+
+            var fileParser = Parse
                             .AsDelimited<PropertyRange>()
                             .Configure(config =>
                             {
                                 config.SetDelimeter(",")
-                                      .SetProperty(0, "Index")
-                                      .SetProperty(1, "Length")
-                                      .SetProperty(2, "PropertyName");
+                                      .SetProperty(0, "Range")
+                                      .SetProperty(1, "PropertyName");
 
                             })
+                            .AddParser(() => rangeParser)
                             .Build();
 
             //Act

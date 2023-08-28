@@ -17,19 +17,7 @@ namespace TextFieldParserFramework.FixedWidth
             return this;
         }
 
-        public IParseBuilder<T, FixedWidthParseConfiguration<T>> AddParser<TNew, TStringParse>(Func<TStringParse> func) where TStringParse : IStringParse
-        {
-            parsers.Add(typeof(TNew), func.Invoke());
-            return this;
-        }
-
         public IFileParse<T> Build()
-        {
-            ConfgureFromAttributes();
-            return new FixedWidthFileParser<T>(new FixedWidthStringParser<T>(configuration), parsers);
-        }
-
-        private void ConfgureFromAttributes()
         {
             foreach (var property in typeof(T).GetProperties())
             {
@@ -39,6 +27,15 @@ namespace TextFieldParserFramework.FixedWidth
                     configuration.SetProperty(new Range(rangeAttribute.Index, rangeAttribute.Length), property.Name);
                 }
             }
+            return new FixedWidthFileParser<T>(BuildStringParser());
         }
+
+        public IParseBuilder<T, FixedWidthParseConfiguration<T>> AddParser<Tnew>(Func<IStringParse<Tnew>> func)
+        {
+            parsers.Add(typeof(Tnew), func.Invoke());
+            return this;
+        }
+
+        public IStringParse<T> BuildStringParser() => new FixedWidthStringParser<T>(configuration, Parsers);
     }
 }

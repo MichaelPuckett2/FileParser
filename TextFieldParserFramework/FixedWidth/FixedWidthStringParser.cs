@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -7,7 +8,14 @@ namespace TextFieldParserFramework.FixedWidth
     public class FixedWidthStringParser<T> : IStringParse<T>
     {
         private readonly FixedWidthParseConfiguration<T> configuration;
-        public FixedWidthStringParser(FixedWidthParseConfiguration<T> configuration) => this.configuration = configuration;
+        private readonly IReadOnlyDictionary<Type, IStringParse> parsers;
+
+        public FixedWidthStringParser(FixedWidthParseConfiguration<T> configuration, System.Collections.Generic.IReadOnlyDictionary<Type, IStringParse> parsers)
+        {
+            this.configuration = configuration;
+            this.parsers = parsers;
+        }
+
         public IParseConfiguration<T> Configuration => configuration;
         IParseConfiguration IStringParse.Configuration => configuration;
         public string ConvertToString(object obj) => ConvertToString((T)obj);
@@ -21,7 +29,11 @@ namespace TextFieldParserFramework.FixedWidth
                 var propertyInfo = implementation.GetType().GetProperty(kvp.Key);
                 if (propertyInfo == null) continue;
                 var subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
-                var propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(subString);
+                object propertyValue;
+                if (parsers.TryGetValue(propertyInfo.PropertyType, out IStringParse stringParser))
+                    propertyValue = stringParser.ConvertFromString(subString);
+                else
+                     propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(subString);
                 propertyInfo.SetValue(implementation, propertyValue);
             }
             return implementation;
@@ -35,7 +47,12 @@ namespace TextFieldParserFramework.FixedWidth
             string lineValue = "".PadRight(capacity);
             foreach (var kvp in configuration.PropertyRanges)
             {
-                _ = t.TryGetStringFromProperty(kvp.Key, out string stringValue);
+                var propertyInfo = t.GetType().GetProperty(kvp.Key);
+                var stringValue = propertyInfo.PropertyType == typeof(string)
+                        ? (string)propertyInfo.GetValue(t)
+                        : TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertToInvariantString(t);
+                if (stringValue == null) continue;
+
                 string fieldValue;
                 if (stringValue.Length > kvp.Value.Length)
                 {

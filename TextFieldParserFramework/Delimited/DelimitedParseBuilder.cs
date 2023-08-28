@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace TextFieldParserFramework.Delimited
 {
-    public class DelimitedParseBuilder<T> : IParseBuilder<T, DelimitedConfiguration<T>>
+    public class DelimitedParseBuilder<T> : IParseBuilder<T, DelimitedParseConfiguration<T>>
     {
         private readonly IDictionary<Type, IStringParse> parsers = new Dictionary<Type, IStringParse>();
-        private readonly DelimitedConfiguration<T> configuration = new DelimitedConfiguration<T>();
+        private readonly DelimitedParseConfiguration<T> configuration = new DelimitedParseConfiguration<T>();
         public IReadOnlyDictionary<Type, IStringParse> Parsers => new ReadOnlyDictionary<Type, IStringParse>(parsers);
 
         public IFileParse<T> Build()
@@ -17,7 +17,7 @@ namespace TextFieldParserFramework.Delimited
             {
                 var delimitedAttribute = typeof(T).GetCustomAttribute<DelimitedAttribute>();
                 if (string.IsNullOrEmpty(delimitedAttribute?.Delimiter))
-                    throw new MissingFieldException($"{nameof(DelimitedConfiguration<T>.Delimeter)} must be set in configuration or with {nameof(DelimitedAttribute)}");
+                    throw new MissingFieldException($"{nameof(DelimitedParseConfiguration<T>.Delimeter)} must be set in configuration or with {nameof(DelimitedAttribute)}");
 
                 configuration.SetDelimeter(delimitedAttribute.Delimiter);
             }
@@ -30,19 +30,21 @@ namespace TextFieldParserFramework.Delimited
                     configuration.SetProperty(indexAttribute.Index, propertyinfo.Name);
                 }
             }
-            return new DelimitedFile<T>(configuration);
+            return new DelimitedFileParser<T>(BuildStringParser());
         }
 
-        public IParseBuilder<T, DelimitedConfiguration<T>> Configure(Action<DelimitedConfiguration<T>> configuration)
+        public IParseBuilder<T, DelimitedParseConfiguration<T>> Configure(Action<DelimitedParseConfiguration<T>> configuration)
         {
             configuration.Invoke(this.configuration);
             return this;
         }
 
-        public IParseBuilder<T, DelimitedConfiguration<T>> AddParser<TNew, TStringParse>(Func<TStringParse> func) where TStringParse : IStringParse
+        public IParseBuilder<T, DelimitedParseConfiguration<T>> AddParser<Tnew>(Func<IStringParse<Tnew>> func)
         {
-            parsers.Add(typeof(TNew), func.Invoke());
+            parsers.Add(typeof(Tnew), func.Invoke());
             return this;
         }
+
+        public IStringParse<T> BuildStringParser() => new DelimitedStringParser<T>(configuration, Parsers);
     }
 }

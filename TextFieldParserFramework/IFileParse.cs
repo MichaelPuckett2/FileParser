@@ -2,7 +2,6 @@
 
 namespace TextFieldParserFramework
 {
-
     public interface IFileParse<T>
     {
         IEnumerable<T> ReadFile(string filePath);

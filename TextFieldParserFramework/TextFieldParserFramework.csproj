@@ -43,12 +43,13 @@
   <ItemGroup>
     <Compile Include="Delimited\DelimitedAttribute.cs" />
     <Compile Include="Delimited\DelimitedParseBuilder.cs" />
-    <Compile Include="Delimited\DelimitedConfiguration.cs" />
-    <Compile Include="Delimited\DelimitedFile.cs" />
+    <Compile Include="Delimited\DelimitedParseConfiguration.cs" />
+    <Compile Include="Delimited\DelimitedFileParser.cs" />
+    <Compile Include="Delimited\DelimitedStringParser.cs" />
     <Compile Include="Delimited\PropertyIndex.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Delimited\IndexAttribute.cs" />
-    <Compile Include="FileParseBuilder.cs" />
+    <Compile Include="Parse.cs" />
     <Compile Include="FixedWidth\FixedWidthAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthConfiguration.cs" />
     <Compile Include="FixedWidth\FixedWidthFileParser.cs" />
