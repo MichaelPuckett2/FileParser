@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using TextFieldParserFramework;
 using TextFieldParserFramework.Delimited;
+using TextFieldParserFrameworkTests.Models;
 
 namespace TextFieldParserFrameworkTests.Delimiter
 {
@@ -122,13 +122,14 @@ namespace TextFieldParserFrameworkTests.Delimiter
         {
             //Arrange
             var fileParser = FileParseBuilder
-                            .AsDelimited<ExpandoObject>()
+                            .AsDelimited<PropertyRange>()
                             .Configure(config =>
                             {
                                 config.SetDelimeter(",")
                                       .SetProperty(0, "Index")
                                       .SetProperty(1, "Length")
                                       .SetProperty(2, "PropertyName");
+
                             })
                             .Build();
 

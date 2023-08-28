@@ -1,4 +1,4 @@
-﻿namespace TextFieldParserFrameworkTests.Delimiter
+﻿namespace TextFieldParserFrameworkTests.Models
 {
     public class Person
     {

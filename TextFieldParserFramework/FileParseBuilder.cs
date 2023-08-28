@@ -5,7 +5,7 @@ namespace TextFieldParserFramework
 {
     public class FileParseBuilder
     {
-        public static FixedWidthParser<T> AsFixedWidth<T>() => new FixedWidthParser<T>();
-        public static DelimitedBuilder<T> AsDelimited<T>() => new DelimitedBuilder<T>();
+        public static IParseBuilder<T, FixedWidthParseConfiguration<T>> AsFixedWidth<T>() => new FixedWidthParseBuilder<T>();
+        public static IParseBuilder<T, DelimitedConfiguration<T>> AsDelimited<T>() => new DelimitedParseBuilder<T>();
     }
 }

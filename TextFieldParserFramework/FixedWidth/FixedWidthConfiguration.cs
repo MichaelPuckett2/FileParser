@@ -5,14 +5,13 @@ using System.Linq.Expressions;
 
 namespace TextFieldParserFramework.FixedWidth
 {
-    public class FixedWidthConfiguration<T> : IParseConfiguration
+    public class FixedWidthParseConfiguration<T> : IParseConfiguration<T>
     {
         public Type Type => typeof(T);
         private readonly IDictionary<string, Range> propertyRanges = new Dictionary<string, Range>();
         public IReadOnlyDictionary<string, Range> PropertyRanges => new ReadOnlyDictionary<string, Range>(propertyRanges);
 
-
-        public FixedWidthConfiguration<T> SetProperty(Range range, string propertyName)
+        public FixedWidthParseConfiguration<T> SetProperty(Range range, string propertyName)
         {
             if (!propertyRanges.ContainsKey(propertyName))
             {
@@ -21,13 +20,13 @@ namespace TextFieldParserFramework.FixedWidth
             return this;
         }
 
-        public FixedWidthConfiguration<T> SetProperty(Range range, Expression<Func<T, object>> getPropertyName)
+        public FixedWidthParseConfiguration<T> SetProperty(Range range, Expression<Func<T, object>> getPropertyName)
         {
             var propertyName = getPropertyName.GetMemberName();
             return SetProperty(range, propertyName);
         }
 
-        public FixedWidthConfiguration<T> SetProperties(params PropertyRange<T>[] propertyRanges)
+        public FixedWidthParseConfiguration<T> SetProperties(params PropertyRange<T>[] propertyRanges)
         {
             foreach (PropertyRange<T> propertyRange in propertyRanges)
             {
@@ -36,6 +35,6 @@ namespace TextFieldParserFramework.FixedWidth
             return this;
         }
 
-        public static FixedWidthConfiguration<T> Empty { get; } = new FixedWidthConfiguration<T>();
+        public static FixedWidthParseConfiguration<T> Empty { get; } = new FixedWidthParseConfiguration<T>();
     }
 }

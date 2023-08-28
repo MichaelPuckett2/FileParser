@@ -5,24 +5,25 @@ using System.Linq;
 
 namespace TextFieldParserFramework.FixedWidth
 {
-    public class FixedWidthParser<T>
+    public class FixedWidthParseBuilder<T> : IParseBuilder<T, FixedWidthParseConfiguration<T>>
     {
         private readonly IDictionary<Type, IStringParse> parsers = new Dictionary<Type, IStringParse>();
+        private readonly FixedWidthParseConfiguration<T> configuration = new FixedWidthParseConfiguration<T>();
         public IReadOnlyDictionary<Type, IStringParse> Parsers => new ReadOnlyDictionary<Type, IStringParse>(parsers);
-        private readonly FixedWidthConfiguration<T> configuration = new FixedWidthConfiguration<T>();
-        public FixedWidthParser<T> Configure(Action<FixedWidthConfiguration<T>> configuration)
+
+        public IParseBuilder<T, FixedWidthParseConfiguration<T>> Configure(Action<FixedWidthParseConfiguration<T>> configuration)
         {
             configuration.Invoke(this.configuration);
             return this;
         }
 
-        public FixedWidthParser<T> AddParser<TNew>(Func<IStringParse<TNew>> func)
+        public IParseBuilder<T, FixedWidthParseConfiguration<T>> AddParser<TNew, TStringParse>(Func<TStringParse> func) where TStringParse : IStringParse
         {
-            parsers.Add(typeof(TNew), func?.Invoke());
+            parsers.Add(typeof(TNew), func.Invoke());
             return this;
         }
 
-        public FixedWidthFileParser<T> Build()
+        public IFileParse<T> Build()
         {
             ConfgureFromAttributes();
             return new FixedWidthFileParser<T>(new FixedWidthStringParser<T>(configuration), parsers);

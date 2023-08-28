@@ -30,6 +30,21 @@ namespace TextFieldParserFrameworkTests.FixedWidth
         }
 
         [TestMethod()]
+        public void ReadComplexTypeTest()
+        {
+            //Arrange
+            var actor = FileParseBuilder
+                .AsFixedWidth<PersonWithAttributes>()
+                .Build();
+
+            //Act
+            var actual = actor.ReadFile(ReadTestFile);
+
+            //Assert
+            Assert.AreEqual(actual.Count(), 7);
+        }
+
+        [TestMethod()]
         public void ReadWithConfigurationTest()
         {
             //Arrange

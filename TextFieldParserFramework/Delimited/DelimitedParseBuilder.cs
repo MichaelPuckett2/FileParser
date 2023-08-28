@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Dynamic;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 
 namespace TextFieldParserFramework.Delimited
 {
-    public class DelimitedBuilder<T>
+    public class DelimitedParseBuilder<T> : IParseBuilder<T, DelimitedConfiguration<T>>
     {
+        private readonly IDictionary<Type, IStringParse> parsers = new Dictionary<Type, IStringParse>();
         private readonly DelimitedConfiguration<T> configuration = new DelimitedConfiguration<T>();
+        public IReadOnlyDictionary<Type, IStringParse> Parsers => new ReadOnlyDictionary<Type, IStringParse>(parsers);
 
-        public DelimitedBuilder<T> Configure(Action<DelimitedConfiguration<T>> sendConfiguration)
-        {
-            sendConfiguration.Invoke(configuration);
-            return this;
-        }
-
-        public DelimitedFile<T> Build()
+        public IFileParse<T> Build()
         {
             if (string.IsNullOrEmpty(configuration.Delimeter))
             {
@@ -34,6 +31,18 @@ namespace TextFieldParserFramework.Delimited
                 }
             }
             return new DelimitedFile<T>(configuration);
+        }
+
+        public IParseBuilder<T, DelimitedConfiguration<T>> Configure(Action<DelimitedConfiguration<T>> configuration)
+        {
+            configuration.Invoke(this.configuration);
+            return this;
+        }
+
+        public IParseBuilder<T, DelimitedConfiguration<T>> AddParser<TNew, TStringParse>(Func<TStringParse> func) where TStringParse : IStringParse
+        {
+            parsers.Add(typeof(TNew), func.Invoke());
+            return this;
         }
     }
 }

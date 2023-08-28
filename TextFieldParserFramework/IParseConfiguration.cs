@@ -6,4 +6,6 @@ namespace TextFieldParserFramework
     {
         Type Type { get; }
     }
+
+    public interface IParseConfiguration<T> : IParseConfiguration { }
 }

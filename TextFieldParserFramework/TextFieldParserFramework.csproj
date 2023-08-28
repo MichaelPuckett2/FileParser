@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delimited\DelimitedAttribute.cs" />
-    <Compile Include="Delimited\DelimitedBuilder.cs" />
+    <Compile Include="Delimited\DelimitedParseBuilder.cs" />
     <Compile Include="Delimited\DelimitedConfiguration.cs" />
     <Compile Include="Delimited\DelimitedFile.cs" />
     <Compile Include="Delimited\PropertyIndex.cs" />
@@ -52,13 +52,14 @@
     <Compile Include="FixedWidth\FixedWidthAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthConfiguration.cs" />
     <Compile Include="FixedWidth\FixedWidthFileParser.cs" />
-    <Compile Include="FixedWidth\FixedWidthParser.cs" />
+    <Compile Include="FixedWidth\FixedWidthParseBuilder.cs" />
     <Compile Include="FixedWidth\FixedWidthStringParser.cs" />
     <Compile Include="FixedWidth\PropertyRange.cs" />
     <Compile Include="FixedWidth\Range.cs" />
     <Compile Include="FixedWidth\RangeAttribute.cs" />
     <Compile Include="IFileParse.cs" />
     <Compile Include="IParseConfiguration.cs" />
+    <Compile Include="IParseBuilder.cs" />
     <Compile Include="IStringParse.cs" />
     <Compile Include="IStringParse_T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

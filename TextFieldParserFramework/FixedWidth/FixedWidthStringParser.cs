@@ -6,11 +6,12 @@ namespace TextFieldParserFramework.FixedWidth
 {
     public class FixedWidthStringParser<T> : IStringParse<T>
     {
-        private readonly FixedWidthConfiguration<T> configuration;
-
-        public FixedWidthStringParser(FixedWidthConfiguration<T> configuration) => this.configuration = configuration;
-
-        public IParseConfiguration Configuration => configuration;
+        private readonly FixedWidthParseConfiguration<T> configuration;
+        public FixedWidthStringParser(FixedWidthParseConfiguration<T> configuration) => this.configuration = configuration;
+        public IParseConfiguration<T> Configuration => configuration;
+        IParseConfiguration IStringParse.Configuration => configuration;
+        public string ConvertToString(object obj) => ConvertToString((T)obj);
+        object IStringParse.ConvertFromString(string str) => ConvertFromString(str);
 
         public T ConvertFromString(string str)
         {
@@ -49,8 +50,5 @@ namespace TextFieldParserFramework.FixedWidth
             }
             return lineValue;
         }
-
-        public string ConvertToString(object obj) => ConvertToString((T)obj);
-        object IStringParse.ConvertFromString(string str) => ConvertFromString(str);
     }
 }
