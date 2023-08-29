@@ -16,6 +16,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
         private const string WriteConfigurationTestFile = "DelimiterWriteConfigurationTest.txt";
         private const string ReadTestFile = "DelimitedReadTest.txt";
         private const string ReadSchemaTestFile = "PersonSchema.txt";
+        private const string ReadTestFile_FixedWidth = "FixedWidthReadTest.txt";
 
         [TestMethod()]
         public void ReadWithAttributesTest()
@@ -23,7 +24,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
             //Arrange
             var actor = Parse
                 .AsDelimited<PersonWithAttributes>()
-                .Build();
+                .BuildFileParser();
 
             //Act
             var actual = actor.ReadFile(ReadTestFile);
@@ -46,7 +47,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
                                       .SetProperty(1, person => person.LastName)
                                       .SetProperty(2, person => person.Age);
                             })
-                            .Build();
+                            .BuildFileParser();
 
             //Act
             var actual = fileParser.ReadFile(ReadTestFile);
@@ -60,15 +61,15 @@ namespace TextFieldParserFrameworkTests.Delimiter
         {
             //Arrange
             var people = new List<Person>
-        {
-            new Person{ FirstName = "Mathew", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Mark", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Luke", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "John", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Acts", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Romans", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
-        };
+            {
+                new Person{ FirstName = "Mathew", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "Mark", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "Luke", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "John", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "Acts", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "Romans", LastName = "KJV", Age = 40 },
+                new Person{ FirstName = "Corinthians", LastName = "KJV", Age = 40 }
+            };
 
             var actor = Parse
                 .AsDelimited<Person>()
@@ -80,14 +81,14 @@ namespace TextFieldParserFrameworkTests.Delimiter
                     .SetProperty(1, person => person.LastName)
                     .SetProperty(2, person => person.Age);
                 })
-                .Build();
+                .BuildFileParser();
 
             //Act
             actor.WriteFile(WriteConfigurationTestFile, people);
 
             //Assert
             Assert.IsTrue(File.Exists(WriteConfigurationTestFile));
-            Assert.AreEqual(File.ReadLines(WriteConfigurationTestFile).Count(), 7);
+            Assert.AreEqual(7, File.ReadLines(WriteConfigurationTestFile).Count());
         }
 
         [TestMethod()]
@@ -107,7 +108,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
 
             var actor = Parse
                 .AsDelimited<PersonWithAttributes>()
-                .Build();
+                .BuildFileParser();
 
             //Act
             actor.WriteFile(WriteAttributeTestFile, people);
@@ -123,8 +124,8 @@ namespace TextFieldParserFrameworkTests.Delimiter
             //Arrange
             var rangeParser = Parse.AsDelimited<Range>()
                                    .Configure(c => c.SetDelimeter("-")
-                                   .SetProperty(1, x => x.Index)
-                                   .SetProperty(2, x => x.Length))
+                                   .SetProperty(0, x => x.Index)
+                                   .SetProperty(1, x => x.Length))
                                    .BuildStringParser();
 
             var fileParser = Parse
@@ -132,18 +133,76 @@ namespace TextFieldParserFrameworkTests.Delimiter
                             .Configure(config =>
                             {
                                 config.SetDelimeter(",")
-                                      .SetProperty(0, "Range")
-                                      .SetProperty(1, "PropertyName");
+                                      .SetProperty(0, x => x.Range)
+                                      .SetProperty(1, x => x.PropertyName);
 
                             })
                             .AddParser(() => rangeParser)
-                            .Build();
+                            .BuildFileParser();
 
             //Act
             var actual = fileParser.ReadFile(ReadSchemaTestFile).ToList();
 
             //Assert
-            Assert.AreEqual(actual.Count, 3);
+            Assert.AreEqual(3, actual.Count);
+
+            Assert.AreEqual("FirstName", actual[0].PropertyName);
+            Assert.AreEqual(1, actual[0].Range.Index);
+            Assert.AreEqual(50, actual[0].Range.Length);
+
+            Assert.AreEqual("LastName", actual[1].PropertyName);
+            Assert.AreEqual(51, actual[1].Range.Index);
+            Assert.AreEqual(50, actual[1].Range.Length);
+
+            Assert.AreEqual("Age", actual[2].PropertyName);
+            Assert.AreEqual(101, actual[2].Range.Index);
+            Assert.AreEqual(3, actual[2].Range.Length);
+        }
+
+        [TestMethod()]
+        public void ApplySchemaDelimitedForFixedWidthTest()
+        {
+            //Arrange
+            var schema = Parse
+                            .AsDelimited<PropertyRange>()
+                            .Configure(config =>
+                            {
+                                config.SetDelimeter(",")
+                                      .SetProperty(0, "Range")
+                                      .SetProperty(1, "PropertyName");
+                            })
+                            .AddParser(() => Parse.AsDelimited<Range>()
+                                   .Configure(c => c.SetDelimeter("-")
+                                   .SetProperty(0, x => x.Index)
+                                   .SetProperty(1, x => x.Length))
+                                   .BuildStringParser())
+                            .BuildFileParser().ReadFile(ReadSchemaTestFile).ToArray();
+
+            var fileParser = Parse
+                .AsFixedWidth<Person>()
+                .Configure(config =>
+                {
+                    config.SetProperties(schema);
+                })
+                .BuildFileParser();
+
+            //Act
+            var actual = fileParser.ReadFile(ReadTestFile_FixedWidth).ToList();
+
+            //Assert
+            Assert.AreEqual(7, actual.Count);
+
+            Assert.AreEqual("Mathew".PadRight(50), actual[0].FirstName);
+            Assert.AreEqual("KJV".PadRight(50), actual[0].LastName);
+            Assert.AreEqual(40, actual[0].Age);
+
+            Assert.AreEqual("John".PadRight(50), actual[3].FirstName);
+            Assert.AreEqual("KJV".PadRight(50), actual[3].LastName);
+            Assert.AreEqual(40, actual[3].Age);
+
+            Assert.AreEqual("Corinthians".PadRight(50), actual[6].FirstName);
+            Assert.AreEqual("KJV".PadRight(50), actual[6].LastName);
+            Assert.AreEqual(40, actual[6].Age);
         }
     }
 }

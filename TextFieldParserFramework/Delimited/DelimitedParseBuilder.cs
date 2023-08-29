@@ -7,12 +7,14 @@ namespace TextFieldParserFramework.Delimited
 {
     public class DelimitedParseBuilder<T> : IParseBuilder<T, DelimitedParseConfiguration<T>>
     {
+        private bool isBuilt = false;
         private readonly IDictionary<Type, IStringParse> parsers = new Dictionary<Type, IStringParse>();
         private readonly DelimitedParseConfiguration<T> configuration = new DelimitedParseConfiguration<T>();
         public IReadOnlyDictionary<Type, IStringParse> Parsers => new ReadOnlyDictionary<Type, IStringParse>(parsers);
-
-        public IFileParse<T> Build()
+        internal TResult PreBuild<TResult>(Func<TResult> func)
         {
+            if (isBuilt) return func.Invoke();
+            isBuilt = true;
             if (string.IsNullOrEmpty(configuration.Delimeter))
             {
                 var delimitedAttribute = typeof(T).GetCustomAttribute<DelimitedAttribute>();
@@ -22,6 +24,19 @@ namespace TextFieldParserFramework.Delimited
                 configuration.SetDelimeter(delimitedAttribute.Delimiter);
             }
 
+            SetIndexAttributes();
+            return func.Invoke();
+        }
+
+        public IStringParse<T> BuildStringParser() 
+            => PreBuild(() => new DelimitedStringParser<T>(configuration, Parsers));
+        public IEnumerableStringParse<T> BuildEnumerableStringParser()
+            => PreBuild(() => new DelimitedEnumerableStringParser<T>(BuildStringParser()));
+        public IFileParse<T> BuildFileParser()
+            => PreBuild(() => new DelimitedFileParser<T>(BuildEnumerableStringParser()));
+
+        private void SetIndexAttributes()
+        {
             foreach (var propertyinfo in typeof(T).GetProperties())
             {
                 var indexAttribute = (IndexAttribute)propertyinfo.GetCustomAttribute(typeof(IndexAttribute));
@@ -30,7 +45,6 @@ namespace TextFieldParserFramework.Delimited
                     configuration.SetProperty(indexAttribute.Index, propertyinfo.Name);
                 }
             }
-            return new DelimitedFileParser<T>(BuildStringParser());
         }
 
         public IParseBuilder<T, DelimitedParseConfiguration<T>> Configure(Action<DelimitedParseConfiguration<T>> configuration)
@@ -45,6 +59,5 @@ namespace TextFieldParserFramework.Delimited
             return this;
         }
 
-        public IStringParse<T> BuildStringParser() => new DelimitedStringParser<T>(configuration, Parsers);
     }
 }

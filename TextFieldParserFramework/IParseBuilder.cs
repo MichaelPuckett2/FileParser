@@ -6,8 +6,9 @@ namespace TextFieldParserFramework
     public interface IParseBuilder<T, TConfig> where TConfig : IParseConfiguration<T>
     {
         IReadOnlyDictionary<Type, IStringParse> Parsers { get; }
-        IFileParse<T> Build();
         IStringParse<T> BuildStringParser();
+        IEnumerableStringParse<T> BuildEnumerableStringParser();
+        IFileParse<T> BuildFileParser();
         IParseBuilder<T, TConfig> Configure(Action<TConfig> configuration);
         IParseBuilder<T, TConfig> AddParser<Tnew>(Func<IStringParse<Tnew>> func);
     }

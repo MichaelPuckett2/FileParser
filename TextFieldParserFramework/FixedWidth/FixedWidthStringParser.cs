@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
+using TextFieldParserFramework.Delimited;
 
 namespace TextFieldParserFramework.FixedWidth
 {
@@ -10,7 +12,7 @@ namespace TextFieldParserFramework.FixedWidth
         private readonly FixedWidthParseConfiguration<T> configuration;
         private readonly IReadOnlyDictionary<Type, IStringParse> parsers;
 
-        public FixedWidthStringParser(FixedWidthParseConfiguration<T> configuration, System.Collections.Generic.IReadOnlyDictionary<Type, IStringParse> parsers)
+        public FixedWidthStringParser(FixedWidthParseConfiguration<T> configuration, IReadOnlyDictionary<Type, IStringParse> parsers)
         {
             this.configuration = configuration;
             this.parsers = parsers;
@@ -23,20 +25,39 @@ namespace TextFieldParserFramework.FixedWidth
 
         public T ConvertFromString(string str)
         {
-            var implementation = Activator.CreateInstance<T>();
+            T t;
+            if (typeof(T).GetConstructors().Any(x => x.GetParameters().Length == 0))
+            {
+                t = Activator.CreateInstance<T>();
+            }
+            else
+            {
+                t = (T)FormatterServices.GetUninitializedObject(typeof(T));
+            }
             foreach (var kvp in configuration.PropertyRanges)
             {
-                var propertyInfo = implementation.GetType().GetProperty(kvp.Key);
-                if (propertyInfo == null) continue;
-                var subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
+                IStringParse stringParse;
+                string subString;
+                var propertyInfo = t.GetType().GetProperty(kvp.Key);
+                if (propertyInfo == null)
+                {
+                    var fieldInfo = t.GetType().GetField(kvp.Key)
+                        ?? throw new Exception($"Could not find property of field {kvp.Key} on type {t.GetType().Name}");
+                    subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
+                    var fieldValue = parsers.TryGetValue(fieldInfo.FieldType, out stringParse)
+                                   ? stringParse.ConvertFromString(subString)
+                                   : fieldInfo.FieldType.InitFromString(subString);
+                    ParseHelpers.SetValue(ref t, fieldInfo, fieldValue);
+                    continue;
+                }
+                subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
                 object propertyValue;
-                if (parsers.TryGetValue(propertyInfo.PropertyType, out IStringParse stringParser))
-                    propertyValue = stringParser.ConvertFromString(subString);
-                else
-                     propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(subString);
-                propertyInfo.SetValue(implementation, propertyValue);
+                propertyValue = parsers.TryGetValue(propertyInfo.PropertyType, out stringParse)
+                              ? stringParse.ConvertFromString(subString)
+                              : propertyValue = propertyInfo.PropertyType.InitFromString(subString);
+                ParseHelpers.SetValue(ref t, propertyInfo, propertyValue);
             }
-            return implementation;
+            return t;
         }
 
         public string ConvertToString(T t)

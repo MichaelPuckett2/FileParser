@@ -21,7 +21,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
             //Arrange
             var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
-                .Build();
+                .BuildFileParser();
 
             //Act
             var actual = actor.ReadFile(ReadTestFile);
@@ -36,7 +36,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
             //Arrange
             var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
-                .Build();
+                .BuildFileParser();
 
             //Act
             var actual = actor.ReadFile(ReadTestFile);
@@ -54,12 +54,11 @@ namespace TextFieldParserFrameworkTests.FixedWidth
                 .Configure(config =>
                 {
                     config
-                    .SetProperties(
-                        new PropertyRange<Person>(new Range(1, 50), person => person.FirstName),
-                        new PropertyRange<Person>(new Range(51, 50), person => person.LastName),
-                        new PropertyRange<Person>(new Range(101, 3), person => person.Age));
+                        .SetProperty(1, 50, person => person.FirstName)
+                        .SetProperty(51, 50, person => person.LastName)
+                        .SetProperty(101, 3, person => person.Age);
                 })
-                .Build();
+                .BuildFileParser();
 
             //Act
             var actual = actor.ReadFile(ReadTestFile);
@@ -74,13 +73,13 @@ namespace TextFieldParserFrameworkTests.FixedWidth
             //Arrange
             var people = new List<Person>
         {
-            new Person{ FirstName = "Mathew", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Mark", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Luke", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "John", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Acts", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Romans", LastName = "KJV", Age = "40" },
-            new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
+            new Person{ FirstName = "Mathew", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "Mark", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "Luke", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "John", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "Acts", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "Romans", LastName = "KJV", Age = 40 },
+            new Person{ FirstName = "Corinthians", LastName = "KJV", Age = 40 }
         };
 
             var actor = Parse
@@ -88,12 +87,11 @@ namespace TextFieldParserFrameworkTests.FixedWidth
                 .Configure(config =>
                 {
                     config
-                    .SetProperties(
-                        new PropertyRange<Person>(new Range(1, 50), person => person.FirstName),
-                        new PropertyRange<Person>(new Range(51, 50), person => person.LastName),
-                        new PropertyRange<Person>(new Range(101, 3), person => person.Age));
+                        .SetProperty(1, 50, person => person.FirstName)
+                        .SetProperty(51, 50, person => person.LastName)
+                        .SetProperty(101, 3, person => person.Age);
                 })
-                .Build();
+                .BuildFileParser();
 
             //Act
             actor.WriteFile(WriteConfigurationTestFile, people);
@@ -120,7 +118,7 @@ namespace TextFieldParserFrameworkTests.FixedWidth
 
             var actor = Parse
                 .AsFixedWidth<PersonWithAttributes>()
-                .Build();
+                .BuildFileParser();
 
             //Act
             actor.WriteFile(WriteAttributeTestFile, people);

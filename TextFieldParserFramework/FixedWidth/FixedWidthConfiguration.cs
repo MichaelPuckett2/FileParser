@@ -11,26 +11,26 @@ namespace TextFieldParserFramework.FixedWidth
         private readonly IDictionary<string, Range> propertyRanges = new Dictionary<string, Range>();
         public IReadOnlyDictionary<string, Range> PropertyRanges => new ReadOnlyDictionary<string, Range>(propertyRanges);
 
-        public FixedWidthParseConfiguration<T> SetProperty(Range range, string propertyName)
+        public FixedWidthParseConfiguration<T> SetProperty(int index, int length, string propertyName)
         {
             if (!propertyRanges.ContainsKey(propertyName))
             {
-                propertyRanges.Add(propertyName, range);
+                propertyRanges.Add(propertyName, new Range(index, length));
             }
             return this;
         }
 
-        public FixedWidthParseConfiguration<T> SetProperty(Range range, Expression<Func<T, object>> getPropertyName)
+        public FixedWidthParseConfiguration<T> SetProperty(int index, int length, Expression<Func<T, object>> getPropertyName)
         {
             var propertyName = getPropertyName.GetMemberName();
-            return SetProperty(range, propertyName);
+            return SetProperty(index, length, propertyName);
         }
 
-        public FixedWidthParseConfiguration<T> SetProperties(params PropertyRange<T>[] propertyRanges)
+        public FixedWidthParseConfiguration<T> SetProperties(params PropertyRange[] propertyRanges)
         {
-            foreach (PropertyRange<T> propertyRange in propertyRanges)
+            foreach (PropertyRange item in propertyRanges)
             {
-                SetProperty(propertyRange.Range, propertyRange.PropertyName);
+                SetProperty(item.Range.Index, item.Range.Length, item.PropertyName);
             }
             return this;
         }

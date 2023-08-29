@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delimited\DelimitedAttribute.cs" />
+    <Compile Include="Delimited\DelimitedEnumerableStringParser.cs" />
     <Compile Include="Delimited\DelimitedParseBuilder.cs" />
     <Compile Include="Delimited\DelimitedParseConfiguration.cs" />
     <Compile Include="Delimited\DelimitedFileParser.cs" />
@@ -49,6 +50,8 @@
     <Compile Include="Delimited\PropertyIndex.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Delimited\IndexAttribute.cs" />
+    <Compile Include="FixedWidth\FixedWidthEnumerableStringParser.cs" />
+    <Compile Include="IEnumerableStringParse.cs" />
     <Compile Include="Parse.cs" />
     <Compile Include="FixedWidth\FixedWidthAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthConfiguration.cs" />
@@ -62,12 +65,15 @@
     <Compile Include="IParseConfiguration.cs" />
     <Compile Include="IParseBuilder.cs" />
     <Compile Include="IStringParse.cs" />
-    <Compile Include="IStringParse_T.cs" />
+    <Compile Include="ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

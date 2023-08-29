@@ -60,7 +60,6 @@
     <Compile Include="FixedWidth\FixWidthTests.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\PersonWithAttributes.cs" />
-    <Compile Include="Models\PropertyRange.cs" />
     <Compile Include="Models\TestFixedWidthModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
