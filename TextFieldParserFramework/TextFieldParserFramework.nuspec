@@ -6,12 +6,17 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
     <projectUrl>https://github.com/MichaelPuckett2/FileParser</projectUrl>
     <description>$description$</description>
     <releaseNotes></releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>Fuent File Parser Strings String Type Custom Attribute</tags>
+    <readme>README.md</readme>
+    <license>LICENSE</readme>
+    <files>
+      <file src="README.md" />
+      <file src="LICENSE" />
+    </files>
   </metadata>
 </package>
