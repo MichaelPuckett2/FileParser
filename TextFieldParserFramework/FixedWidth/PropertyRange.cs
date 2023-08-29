@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 
 namespace TextFieldParserFramework.FixedWidth
 {
-    public struct PropertyRange<T>
+    public struct PropertyRange
     {
         public Range Range;
         public string PropertyName;
 
-        public PropertyRange(Range range, Expression<Func<T, object>> getPropertyName)
+        public PropertyRange(Range range, string propertyName)
         {
             Range = range;
-            PropertyName = getPropertyName.GetMemberName() ?? string.Empty;
+            PropertyName = propertyName ?? string.Empty;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is PropertyRange<T> other &&
+            return obj is PropertyRange other &&
                    EqualityComparer<Range>.Default.Equals(Range, other.Range) &&
                    EqualityComparer<string>.Default.Equals(PropertyName, other.PropertyName);
         }

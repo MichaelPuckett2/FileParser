@@ -2,8 +2,8 @@
 {
     public struct Range
     {
-        public int Index;
-        public int Length;
+        public int Index { get; set; }
+        public int Length { get; set; }
 
         public Range(int index, int length)
         {

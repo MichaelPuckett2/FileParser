@@ -42,26 +42,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Delimited\DelimitedAttribute.cs" />
-    <Compile Include="Delimited\DelimitedBuilder.cs" />
-    <Compile Include="Delimited\DelimitedConfiguration.cs" />
-    <Compile Include="Delimited\DelimitedFile.cs" />
+    <Compile Include="Delimited\DelimitedEnumerableStringParser.cs" />
+    <Compile Include="Delimited\DelimitedParseBuilder.cs" />
+    <Compile Include="Delimited\DelimitedParseConfiguration.cs" />
+    <Compile Include="Delimited\DelimitedFileParser.cs" />
+    <Compile Include="Delimited\DelimitedStringParser.cs" />
     <Compile Include="Delimited\PropertyIndex.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Delimited\IndexAttribute.cs" />
-    <Compile Include="FileParseBuilder.cs" />
+    <Compile Include="FixedWidth\FixedWidthEnumerableStringParser.cs" />
+    <Compile Include="IEnumerableStringParse.cs" />
+    <Compile Include="Parse.cs" />
     <Compile Include="FixedWidth\FixedWidthAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthConfiguration.cs" />
-    <Compile Include="FixedWidth\FixedWidthFile.cs" />
-    <Compile Include="FixedWidth\FixedWithBuilder.cs" />
+    <Compile Include="FixedWidth\FixedWidthFileParser.cs" />
+    <Compile Include="FixedWidth\FixedWidthParseBuilder.cs" />
+    <Compile Include="FixedWidth\FixedWidthStringParser.cs" />
     <Compile Include="FixedWidth\PropertyRange.cs" />
     <Compile Include="FixedWidth\Range.cs" />
     <Compile Include="FixedWidth\RangeAttribute.cs" />
     <Compile Include="IFileParse.cs" />
+    <Compile Include="IParseConfiguration.cs" />
+    <Compile Include="IParseBuilder.cs" />
+    <Compile Include="IStringParse.cs" />
+    <Compile Include="ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README.md" />
+    <Content Include="LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

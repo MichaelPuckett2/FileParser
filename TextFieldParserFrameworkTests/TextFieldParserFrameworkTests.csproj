@@ -57,13 +57,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Delimiter\DelimiterTests.cs" />
-    <Compile Include="Delimiter\Person.cs" />
-    <Compile Include="Delimiter\PersonWithAttributes.cs" />
     <Compile Include="FixedWidth\FixWidthTests.cs" />
-    <Compile Include="FixedWidth\Person.cs" />
-    <Compile Include="FixedWidth\PersonWithAttributes.cs" />
-    <Compile Include="FixedWidth\TestFixedWidthModel.cs" />
-    <Compile Include="FixedWidth\TestFixedWidthSchema.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonWithAttributes.cs" />
+    <Compile Include="Models\TestFixedWidthModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -79,10 +76,14 @@
     <Content Include="DelimitedReadTest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="PersonSchema.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="FixedWidthReadTest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

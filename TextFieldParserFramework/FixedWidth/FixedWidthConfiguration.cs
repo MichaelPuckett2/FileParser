@@ -5,41 +5,36 @@ using System.Linq.Expressions;
 
 namespace TextFieldParserFramework.FixedWidth
 {
-    public class FixedWidthConfiguration<T>
+    public class FixedWidthParseConfiguration<T> : IParseConfiguration<T>
     {
+        public Type Type => typeof(T);
+        private readonly IDictionary<string, Range> propertyRanges = new Dictionary<string, Range>();
+        public IReadOnlyDictionary<string, Range> PropertyRanges => new ReadOnlyDictionary<string, Range>(propertyRanges);
 
-        private readonly IDictionary<string, Range> ranges = new Dictionary<string, Range>();
-        public IReadOnlyDictionary<string, Range> Ranges => new ReadOnlyDictionary<string, Range>(ranges);
-
-        public void SetProperty(Range range, string propertyName)
+        public FixedWidthParseConfiguration<T> SetProperty(int index, int length, string propertyName)
         {
-            if (!ranges.ContainsKey(propertyName))
+            if (!propertyRanges.ContainsKey(propertyName))
             {
-                ranges.Add(propertyName, range);
-            }
-        }
-
-        public FixedWidthConfiguration<T> SetProperty(Range range, Expression<Func<T, object>> getPropertyName)
-        {
-            var propertyName = getPropertyName.GetMemberName();
-            if (!ranges.ContainsKey(propertyName))
-            {
-                ranges.Add(propertyName, range);
+                propertyRanges.Add(propertyName, new Range(index, length));
             }
             return this;
         }
 
-        public void SetProperties(params PropertyRange<T>[] propertyRanges)
+        public FixedWidthParseConfiguration<T> SetProperty(int index, int length, Expression<Func<T, object>> getPropertyName)
         {
-            foreach (PropertyRange<T> propertyRange in propertyRanges)
-            {
-                if (!ranges.ContainsKey(propertyRange.PropertyName))
-                {
-                    ranges.Add(propertyRange.PropertyName, propertyRange.Range);
-                }
-            }
+            var propertyName = getPropertyName.GetMemberName();
+            return SetProperty(index, length, propertyName);
         }
 
-        public static FixedWidthConfiguration<T> Empty { get; } = new FixedWidthConfiguration<T>();
+        public FixedWidthParseConfiguration<T> SetProperties(params PropertyRange[] propertyRanges)
+        {
+            foreach (PropertyRange item in propertyRanges)
+            {
+                SetProperty(item.Range.Index, item.Range.Length, item.PropertyName);
+            }
+            return this;
+        }
+
+        public static FixedWidthParseConfiguration<T> Empty { get; } = new FixedWidthParseConfiguration<T>();
     }
 }

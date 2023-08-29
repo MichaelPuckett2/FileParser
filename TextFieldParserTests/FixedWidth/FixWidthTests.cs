@@ -14,7 +14,7 @@ public class FixWidthTests
     public void ReadWithAttributesTest()
     {
         //Arrange
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 
@@ -29,7 +29,7 @@ public class FixWidthTests
     public void ReadWithConfigurationTest()
     {
         //Arrange
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
@@ -62,7 +62,7 @@ public class FixWidthTests
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
@@ -97,7 +97,7 @@ public class FixWidthTests
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = FileParseBuilder
+        var actor = Parse
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 

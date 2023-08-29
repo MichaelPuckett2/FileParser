@@ -1,6 +1,6 @@
 ﻿using TextFieldParserFramework.FixedWidth;
 
-namespace TextFieldParserFrameworkTests.FixedWidth
+namespace TextFieldParserFrameworkTests.Models.FixedWidth
 {
     [FixedWidth]
     public class TestFixedWidthModel

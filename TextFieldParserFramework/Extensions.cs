@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TextFieldParserFramework
 {
@@ -94,6 +95,20 @@ namespace TextFieldParserFramework
             throw new Exception("Could not get member name " + (lambdaExpression.Name ?? string.Empty));
         IL_0054:
             return memberExpression?.Member?.Name;
+        }
+
+        public static object InitFromString(this Type type, string str)
+            => TypeDescriptor.GetConverter(type).ConvertFromInvariantString(str);
+
+        public static T InitFromString<T>(this T t, string str)
+            => (T)TypeDescriptor.GetConverter(t is Type type ? type : t.GetType()).ConvertFromInvariantString(str);
+
+        public static void SetValue<T>(ref this T t, PropertyInfo propertyInfo, object propertyValue)
+            where T : struct
+        {
+            var box = RuntimeHelpers.GetObjectValue(t);
+            propertyInfo.SetValue(box, propertyValue);
+            t = (T)box;
         }
     }
 }
