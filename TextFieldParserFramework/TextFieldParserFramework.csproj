@@ -47,7 +47,9 @@
     <Compile Include="Delimited\DelimitedParseConfiguration.cs" />
     <Compile Include="Delimited\DelimitedFileParser.cs" />
     <Compile Include="Delimited\DelimitedStringParser.cs" />
+    <Compile Include="Utility\Formatter.cs" />
     <Compile Include="Delimited\PropertyIndex.cs" />
+    <Compile Include="Delimited\Splitter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Delimited\IndexAttribute.cs" />
     <Compile Include="FixedWidth\FixedWidthEnumerableStringParser.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="IStringParse.cs" />
     <Compile Include="ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Instantiator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE">

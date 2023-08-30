@@ -1,5 +1,4 @@
-﻿using System;
-using TextFieldParserFramework.Delimited;
+﻿using TextFieldParserFramework.Delimited;
 using TextFieldParserFramework.FixedWidth;
 
 namespace TextFieldParserFrameworkTests.Models

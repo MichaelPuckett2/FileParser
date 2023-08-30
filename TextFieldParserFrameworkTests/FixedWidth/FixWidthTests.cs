@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TextFieldParserFramework;
-using TextFieldParserFramework.FixedWidth;
 using TextFieldParserFrameworkTests.Models;
 
 namespace TextFieldParserFrameworkTests.FixedWidth

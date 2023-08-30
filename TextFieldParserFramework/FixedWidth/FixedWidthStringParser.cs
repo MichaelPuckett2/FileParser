@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Serialization;
 using TextFieldParserFramework.Delimited;
+using TextFieldParserFramework.Utility;
 
 namespace TextFieldParserFramework.FixedWidth
 {
@@ -25,37 +25,15 @@ namespace TextFieldParserFramework.FixedWidth
 
         public T ConvertFromString(string str)
         {
-            T t;
-            if (typeof(T).GetConstructors().Any(x => x.GetParameters().Length == 0))
-            {
-                t = Activator.CreateInstance<T>();
-            }
-            else
-            {
-                t = (T)FormatterServices.GetUninitializedObject(typeof(T));
-            }
+            Instantiator.GetInstanceOf(out T t);
+            var formatter = new Formatter<T>(parsers);
             foreach (var kvp in configuration.PropertyRanges)
             {
-                IStringParse stringParse;
-                string subString;
-                var propertyInfo = t.GetType().GetProperty(kvp.Key);
-                if (propertyInfo == null)
-                {
-                    var fieldInfo = t.GetType().GetField(kvp.Key)
-                        ?? throw new Exception($"Could not find property of field {kvp.Key} on type {t.GetType().Name}");
-                    subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
-                    var fieldValue = parsers.TryGetValue(fieldInfo.FieldType, out stringParse)
-                                   ? stringParse.ConvertFromString(subString)
-                                   : fieldInfo.FieldType.InitFromString(subString);
-                    ParseHelpers.SetValue(ref t, fieldInfo, fieldValue);
+                string value = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
+                string name = kvp.Key;
+                if (formatter.SetValues(ref t, value, name))
                     continue;
-                }
-                subString = str.Substring(kvp.Value.Index - 1, kvp.Value.Length);
-                object propertyValue;
-                propertyValue = parsers.TryGetValue(propertyInfo.PropertyType, out stringParse)
-                              ? stringParse.ConvertFromString(subString)
-                              : propertyValue = propertyInfo.PropertyType.InitFromString(subString);
-                ParseHelpers.SetValue(ref t, propertyInfo, propertyValue);
+                throw new Exception($"Could not find property or field {name} on type {t.GetType().Name} therefore could not assign value {value}");
             }
             return t;
         }

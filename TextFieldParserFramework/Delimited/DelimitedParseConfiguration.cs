@@ -12,6 +12,8 @@ namespace TextFieldParserFramework.Delimited
         public IReadOnlyList<PropertyIndex<T>> PropertyIndexes => new List<PropertyIndex<T>>(propertyIndexes);
         public string Delimeter { get; private set; } = string.Empty;
         public StringSplitOptions StringSplitOptions { get; private set; }
+        public ICollection<string> Examples { get; } = new List<string>();
+        public string Description { get; set; } = string.Empty;
 
         public DelimitedParseConfiguration<T> SetDelimeter(string delimeter)
         {
@@ -45,5 +47,30 @@ namespace TextFieldParserFramework.Delimited
         }
 
         public static DelimitedParseConfiguration<T> Empty { get; } = new DelimitedParseConfiguration<T>();
+    }
+
+
+    /// <summary>
+    /// Taken from .NET 7 to be used here. Will be removed for the System.StringSplitOptions in .
+    /// Specifies options for applicable Overload:System.String.Split method overloads,
+    /// such as whether to omit empty substrings from the returned array or trim whitespace
+    /// from substrings
+    /// </summary>
+    [Flags]
+    public enum StringSplitOptions
+    {
+        /// <summary>
+        /// Use the default options when splitting strings.
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Omit array elements that contain an empty string from the result.
+        /// If System.StringSplitOptions.RemoveEmptyEntries and System.StringSplitOptions.TrimEntries</summary>  
+        RemoveEmptyEntries = 1,
+        /// <summary>
+        /// Trim white-space characters from each substring in the result. This field is
+        /// available in .NET 5 and later versions only.
+        /// </summary>
+        TrimEntries = 2
     }
 }

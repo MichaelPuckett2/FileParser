@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,7 +33,41 @@ namespace TextFieldParserFrameworkTests.Delimiter
         }
 
         [TestMethod()]
-        public void ReadWithConfigurationTest()
+        public void ReadArrayWithConfigurationTest()
+        {
+            //Arrange
+            var array = new List<string>
+            {
+                "Mathew, KJV, 40",
+                "Mark, KJV, 40",
+                "Luke, KJV, 40",
+                "John, KJV, 40",
+                "Acts, KJV, 40",
+                "Romans, KJV, 40",
+                "Corinthians, KJV, 40"
+            };
+
+            var fileParser = Parse
+                            .AsDelimited<Person>()
+                            .Configure(config =>
+                            {
+                                config.SetDelimeter(",")
+                                      .SetSplitOptions(TextFieldParserFramework.Delimited.StringSplitOptions.None)
+                                      .SetProperty(0, person => person.FirstName)
+                                      .SetProperty(1, person => person.LastName)
+                                      .SetProperty(2, person => person.Age);
+                            })
+                            .BuildEnumerableStringParser();
+
+            //Act
+            var actual = fileParser.FromStrings(array);
+
+            //Assert
+            Assert.AreEqual(actual.Count(), 7);
+        }
+
+        [TestMethod()]
+        public void ReadFileWithConfigurationTest()
         {
             //Arrange
             var fileParser = Parse
@@ -42,7 +75,7 @@ namespace TextFieldParserFrameworkTests.Delimiter
                             .Configure(config =>
                             {
                                 config.SetDelimeter(",")
-                                      .SetSplitOptions(StringSplitOptions.None)
+                                      .SetSplitOptions(TextFieldParserFramework.Delimited.StringSplitOptions.None)
                                       .SetProperty(0, person => person.FirstName)
                                       .SetProperty(1, person => person.LastName)
                                       .SetProperty(2, person => person.Age);

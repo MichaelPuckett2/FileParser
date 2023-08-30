@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+using TextFieldParserFramework.Utility;
 
 namespace TextFieldParserFramework.Delimited
 {
@@ -24,36 +21,16 @@ namespace TextFieldParserFramework.Delimited
 
         public T ConvertFromString(string str)
         {
-            T t;
-            if (typeof(T).GetConstructors().Any(x => x.GetParameters().Length == 0))
-            {
-                t = Activator.CreateInstance<T>();
-            }
-            else
-            {
-                t = (T)FormatterServices.GetUninitializedObject(typeof(T));
-            }
-            var stringValues = str.Split(configuration.Delimeter.ToCharArray(), configuration.StringSplitOptions);
+            Instantiator.GetInstanceOf(out T t);
+            string[] stringValues = new Splitter().SplitString(str, configuration);
+            var formatter = new Formatter<T>(parsers);
             foreach (var propertyIndex in configuration.PropertyIndexes)
             {
-                IStringParse stringParse;
-                var memberInfos = t.GetType().GetMembers();
-                var propertyInfo = t.GetType().GetProperty(propertyIndex.PropertyName);
-                if (propertyInfo == null)
-                {
-                    var fieldInfo = t.GetType().GetField(propertyIndex.PropertyName) 
-                        ?? throw new Exception($"Could not find property of field {propertyIndex.PropertyName} on type {t.GetType().Name}");
-
-                    var fieldValue = parsers.TryGetValue(fieldInfo.FieldType, out stringParse)
-                                   ? stringParse.ConvertFromString(stringValues[propertyIndex.Index])
-                                   : fieldInfo.FieldType.InitFromString(stringValues[propertyIndex.Index]);
-                    ParseHelpers.SetValue(ref t, fieldInfo, fieldValue);
+                string value = stringValues[propertyIndex.Index];
+                string name = propertyIndex.PropertyName;
+                if (formatter.SetValues(ref t, value, name))
                     continue;
-                }
-                var propertyValue = parsers.TryGetValue(propertyInfo.PropertyType, out stringParse)
-                                  ? stringParse.ConvertFromString(stringValues[propertyIndex.Index])
-                                  : propertyInfo.PropertyType.InitFromString(stringValues[propertyIndex.Index]);
-                ParseHelpers.SetValue(ref t, propertyInfo, propertyValue);
+                throw new Exception($"Could not find property or field {name} on type {t.GetType().Name} therefore could not assign value {value}");
             }
             return t;
         }

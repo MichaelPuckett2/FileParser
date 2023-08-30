@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TextFieldParser;
 
 namespace TextFieldParserTests.FixedWidth;
 
@@ -14,7 +13,7 @@ public class FixWidthTests
     public void ReadWithAttributesTest()
     {
         //Arrange
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 
@@ -29,7 +28,7 @@ public class FixWidthTests
     public void ReadWithConfigurationTest()
     {
         //Arrange
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
@@ -62,7 +61,7 @@ public class FixWidthTests
             new Person{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<Person>()
             .Configure(config =>
             {
@@ -97,7 +96,7 @@ public class FixWidthTests
             new PersonWithAttributes{ FirstName = "Corinthians", LastName = "KJV", Age = "40" }
         };
 
-        var actor = Parse
+        var actor = FileParseBuilder
             .AsFixedWidth<PersonWithAttributes>()
             .Build();
 

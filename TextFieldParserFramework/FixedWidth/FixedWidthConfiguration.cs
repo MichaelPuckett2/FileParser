@@ -10,6 +10,8 @@ namespace TextFieldParserFramework.FixedWidth
         public Type Type => typeof(T);
         private readonly IDictionary<string, Range> propertyRanges = new Dictionary<string, Range>();
         public IReadOnlyDictionary<string, Range> PropertyRanges => new ReadOnlyDictionary<string, Range>(propertyRanges);
+        public ICollection<string> Examples { get; } = new List<string>();
+        public string Description { get; set; } = string.Empty;
 
         public FixedWidthParseConfiguration<T> SetProperty(int index, int length, string propertyName)
         {
