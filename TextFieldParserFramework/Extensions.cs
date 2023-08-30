@@ -2,39 +2,11 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace TextFieldParserFramework
 {
     public static class Extensions
     {
-        public static bool TrySetPropertyFromString<TItem>(this TItem item, PropertyInfo propertyInfo, string stringValue)
-        {
-            try
-            {
-                var propertyValue = TypeDescriptor.GetConverter(propertyInfo.PropertyType).ConvertFromInvariantString(stringValue);
-                propertyInfo.SetValue(item, propertyValue);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static bool TrySetPropertyFromString<TItem>(this TItem item, string propertyName, string stringValue)
-        {
-            var propertyInfo = item.GetType().GetProperty(propertyName);
-            if (propertyInfo == null) return false;
-            return item.TrySetPropertyFromString(propertyInfo, stringValue);
-        }
-
-        public static bool TrySetPropertyFromString<TItem>(this TItem item, Expression<Func<TItem, object>> getPropertyName, string stringValue)
-        {
-            var propertyName = getPropertyName.GetMemberName();
-            return item.TrySetPropertyFromString(propertyName, stringValue);
-        }
-
         public static bool TryGetStringFromProperty<TItem>(this TItem item, PropertyInfo propertyInfo, out string stringValue)
         {
             try
@@ -68,12 +40,6 @@ namespace TextFieldParserFramework
             return item.TryGetStringFromProperty(propertyInfo, out stringValue);
         }
 
-        public static bool TryGetStringFromProperty<TItem>(this TItem item, Expression<Func<TItem, object>> getPropertyName, out string stringValue)
-        {
-            var propertyName = getPropertyName.GetMemberName();
-            return item.TryGetStringFromProperty(propertyName, out stringValue);
-        }
-
         public static string GetMemberName(this LambdaExpression lambdaExpression)
         {
             MemberExpression memberExpression;
@@ -99,16 +65,5 @@ namespace TextFieldParserFramework
 
         public static object InitFromString(this Type type, string str)
             => TypeDescriptor.GetConverter(type).ConvertFromInvariantString(str);
-
-        public static T InitFromString<T>(this T t, string str)
-            => (T)TypeDescriptor.GetConverter(t is Type type ? type : t.GetType()).ConvertFromInvariantString(str);
-
-        public static void SetValue<T>(ref this T t, PropertyInfo propertyInfo, object propertyValue)
-            where T : struct
-        {
-            var box = RuntimeHelpers.GetObjectValue(t);
-            propertyInfo.SetValue(box, propertyValue);
-            t = (T)box;
-        }
     }
 }
